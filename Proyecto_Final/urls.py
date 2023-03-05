@@ -1,4 +1,3 @@
-
 from django.contrib.auth import views as auth_views
 from Proyecto.views import CustomLoginView
 from Proyecto.views import LoginForm

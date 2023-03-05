@@ -1,0 +1,19 @@
+{% extends "Proyecto/base.html" %}
+{% load static %}
+{% block content  %}
+    <h1>Adherite</h1>
+    <h3>Dejanos tus datos, un representante te contactara a la brevedad</h3>
+    
+    {% if miFormulario.errors %}
+    <p style="color: red;"> Están mal los datos, revisar</p>
+    {% endif %}
+
+    <form action="" method="POST">{% csrf_token %}
+        <!-- Django-->
+        <table>
+            {{ miFormulario.as_table }}
+        </table>
+        <input type="submit", value="Enviar">
+    </form>
+
+{% endblock %}

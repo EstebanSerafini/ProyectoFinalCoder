@@ -1,12 +1,19 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
-from .forms import RegisterForm, LoginForm
+from .forms import RegisterForm, LoginForm, ClienteFormulario
+from .models import Cliente, Plan
 from django.contrib.auth.views import LoginView
+from django.http import HttpResponse
+from Proyecto.models import *
+from Proyecto.forms import *
 
 #Pagina de Inicio
 def home(request):
     return render(request, 'Proyecto/home.html')
+
+def planes(request):
+      return render(request, "Proyecto/planes.html")
 
 #Registro y Logueo
 class RegisterView(View):
@@ -47,4 +54,26 @@ def dispatch(self, request, *args, **kwargs):
         # de lo contrario, procese el envío como lo haría normalmente
         return super(RegisterView, self).dispatch(request, *args, **kwargs)
     
-    
+#Registrar Cliente
+def clientes(request):
+      if request.method == 'POST':
+            miFormulario = ClienteFormulario(request.POST) #aquí mellega toda la información del html
+            print(miFormulario)
+            if miFormulario.is_valid():   #Si pasó la validación de Django
+                  informacion = miFormulario.cleaned_data
+                  cliente = Cliente (nombre=informacion['nombre'], apellido=informacion['apellido'], email=informacion['email']) 
+                  cliente.save()
+                  return render(request, "Proyecto/clientes.html") #Vuelvo al inicio o a donde quieran
+      else: 
+            miFormulario= ClienteFormulario() #Formulario vacio para construir el html
+      return render(request, "Proyecto/clientes.html", {"miFormulario":miFormulario})
+
+#Buscar Plan
+def buscar(request):
+      if request.GET["numero"]:
+            numero = request.GET['numero'] 
+            planes = Plan.objects.filter(numero__icontains=numero)
+            return render(request, "Proyecto/planes.html", {"planes":planes, "numero":numero})
+      else: 
+            respuesta = "No enviaste datos"
+      return render(request, "Proyecto/planes.html", {"respuesta":respuesta})

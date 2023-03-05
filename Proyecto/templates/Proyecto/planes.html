@@ -1,0 +1,50 @@
+{% extends "Proyecto/base.html" %}
+{% load static %}
+{% block content  %}
+
+    <h1>PLANES</h1>
+    <h3>Planes Disponibles</h3>
+    <p>
+        Plan 1,
+        Plan 2,
+        Plan 3,
+        Plan 4,
+        Plan 5
+    </p>
+        <!-- Boton Buscar Planes -->
+
+        <form action="/buscar/" method="GET">
+
+            <input type="number" name="numero" id="numero">
+    
+            <input type="submit" value="Buscar Plan">
+    
+        </form>
+    
+        <!-- Buscar Planes -->
+    
+            {% if planes %}
+    
+            <p>Plan Numero {{numero}}</p>
+        
+            <ul>
+            {% for plan in planes %}
+                <li> Numero {{plan.numero}} </li>
+                <li> Sucursal {{plan.sucursal}} </li>
+                <li> Especialidad {{plan.especialidad}} </li>
+                <li> Clinica {{plan.clinica}} </li>
+                <li> Sanatorio {{plan.sanatorio}} </li>
+            {% endfor %}
+        
+            </ul>
+        
+            {% else %}
+                <p>No hay planes con esa número.</p>
+        
+            {% endif %}
+        
+            <p style="color: red;">{{respuesta}}</p>
+
+    <a class="btn btn-primary btn-lg" href="../clientes" role="button">Asociarme</a>        
+    
+{% endblock %}
